@@ -1,13 +1,26 @@
 <template>
-  <ul>
-    <li
+  <div>
+    <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="primary"
+        data-testid="loading-indicator"
+    />
+    <v-alert v-if="loadError" type="error" data-testid="loading-error">
+      Restaurants could not be loaded.
+    </v-alert>
+    <v-list-item
         v-for="restaurant in restaurants"
         :key="restaurant.id"
         data-testid="restaurant"
     >
-      {{ restaurant.name }}
-    </li>
-  </ul>
+      <v-list-item-content>
+        <v-list-item-title>
+          {{ restaurant.name }}
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </div>
 </template>
 
 <script>
@@ -22,6 +35,8 @@ export default {
     loadRestaurants: 'restaurants/load',
   }),
   computed: mapState({
+    loading: state => state.restaurants.loading,
+    loadError: state => state.restaurants.loadError,
     restaurants: state => state.restaurants.records,
   }),
 };
